@@ -5,6 +5,7 @@
 <code> ::= <syntax> | <syntax> "\n" <code>
 <syntax> ::= <whitespace> <syntax> | <loop> | <assignment> | <output>
 <loop> ::= "while" <whitespace> <condition> <whitespace> "{\n" <code> "\n" <optwhitespace> "}" <whitespace>
+<if> ::= "if" <whitespace> <condition> <whitespace> "{\n" <code> "\n" <optwhitespace> "}" <whitespace>
 <assignment> ::= "int" <whitespace> <variable> <whitespace> "=" <whitespace> <expression> ";"
 <output> ::= "print" <whitespace> <variable> ";" 
 <condition> ::= <expression> <whitespace> <comparetor> <whitespace> <expression>
@@ -12,7 +13,7 @@
 <whitespace> ::= " " <whitespace> | " "
 <optwhitespace> ::= " " <optwhitespace> | ""
 
-<expression> ::= <value> | <expression> <operator> <expression> | "(" <expression> ")"
+<expression> ::= <value> | <expression> <operator> <expression>
 
 <value> ::= <number> | <variable>
 
