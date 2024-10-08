@@ -6,5 +6,5 @@ while count < 10 {
     int c = a+b
     int a = b
     int b = c
-    print c
+    print b
 }
