@@ -131,6 +131,8 @@ struct AST{
                 AST *ast = new AST(Type::Print);
                 ast->construct();
                 body.pb(ast);
+            }else{
+                throw("naah");
             }
         }
     }
@@ -172,15 +174,76 @@ struct AST{
             variables[variable] = val;
         }
     }
+
+    void print(){
+        if(type == Type::While || type == Type::If || type == Type::Start){
+            if(type != Type::Start){
+                cout << (type == Type::While?"while(":"if(");
+                expression1->print();
+                cout << compare;
+                expression2->print();
+                cout << "){\n";
+            }
+            for(auto ast : body){
+                ast->print();
+            }
+            if(type != Type::Start) cout << "}\n";
+            return;
+        }
+        if(type == Type::Expression){
+            expression1->print();
+            if(op == Operator::Addition) cout << '+';
+            if(op == Operator::Subtraction) cout << '-';
+            if(op == Operator::Multiplication) cout << '*';
+            if(op == Operator::Division) cout << '/';
+            expression2->print();
+        }
+        if(type == Type::Number) cout << value;
+        if(type == Type::Variable) cout << variable;
+        if(type == Type::Print){
+            cout << "cout << ";
+            expression1->print();
+            cout << " << endl;\n";
+        }
+        if(type == Type::Assignment){
+            cout << variable << " = ";
+            expression1->print();
+            cout << ";\n";
+        }
+    }
 };
 
 int main() {
 
-    freopen("fib.txt", "r", stdin);
+    string filename = "fib.txt";
+    freopen(filename.c_str(), "r", stdin);
 
     AST ast(Type::Start);
-    ast.construct();
-    ast.run();
+    try{
+        ast.construct();
+        ast.run();
+    }catch(exception e){
+        cout << "Could not compile because: ";
+        exit(0);
+    }
+    fclose(stdin);
+    freopen("code.cpp", "w", stdout);
+
+    cout << "#include <bits/stdc++.h>\nusing namespace std;\n#define ll long long\nll ";
+
+    string toAdd;
+    for(auto &[k, v] : variables){
+        toAdd+=k+',';
+    }
+    toAdd.back() = ';';
+    cout << toAdd << "\n\nint main() {\n";
+    ast.print();
+    cout << "   return 0;\n}";
+    cout << endl;
+
+    system(("g++ code.cpp -o " + filename.substr(0, filename.length()-4)).c_str());
+    fclose(stdout);
+    remove("code.cpp");
 
     return 0;
 }
