@@ -68,6 +68,9 @@ struct AST{
             }
         }
         if(type == Type::Expression){
+            for(auto &c : "+-*/"){
+                if(c == in[0] || c == in.back()) throw("busigt");
+            }
             for(int i = ((ll)in.size())-1;i>=0;i--){
                 if(in[i] == '+' || in[i] == '-'){
                     op = (in[i] == '+') ? Operator::Addition : Operator::Subtraction;
@@ -94,6 +97,7 @@ struct AST{
             }catch(exception e){
                 type = Type::Variable;
                 variable = in;
+                variables[variable] = 0;
             }
             return;
         }
@@ -155,7 +159,7 @@ struct AST{
             if(compare == "==") return a == b;
             if(compare == "!=") return a != b;
         }
-        return 1;
+        throw("ahop");
     }
 
     void run(){
@@ -193,9 +197,9 @@ struct AST{
         if(type == Type::Expression){
             expression1->print();
             if(op == Operator::Addition) cout << '+';
-            if(op == Operator::Subtraction) cout << '-';
-            if(op == Operator::Multiplication) cout << '*';
-            if(op == Operator::Division) cout << '/';
+            else if(op == Operator::Subtraction) cout << '-';
+            else if(op == Operator::Multiplication) cout << '*';
+            else if(op == Operator::Division) cout << '/';
             expression2->print();
         }
         if(type == Type::Number) cout << value;
