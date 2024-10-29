@@ -17,7 +17,7 @@
 
 <value> ::= <number> | <variable>
 
-<variable> ::= <letter> | <letter> <variable>
+<variable> ::= <letter> | <variable> <letter> | <variable> <digit>
 <number> ::= <digit> | <digit> <number>
 <comparetor> ::= "<" | ">" | "!=" | "==" | "<=" | ">="
 <operator> ::= "+" | "-" | "*" | "/"

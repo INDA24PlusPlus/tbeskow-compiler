@@ -66,6 +66,7 @@ struct AST{
                 compare[0] = '<';
                 swap(expression1, expression2);
             }
+            if(compare != "<" && compare != "<=" && compare != "==" && compare != "!=") throw("Not existing compare");
         }
         if(type == Type::Expression){
             for(auto &c : "+-*/"){
@@ -93,8 +94,9 @@ struct AST{
             }
             try{
                 value = stoi(in);
+                if(to_string(value).size()!=in.size()) throw("gaaah");
                 type = Type::Number;
-            }catch(exception e){
+            }catch(...){ // borde kanske kolla ifall den innehåller tecken som inte är a-z, A-Z eller 0-9 (men då får man typ skylla sig själv)
                 type = Type::Variable;
                 variable = in;
                 variables[variable] = 0;
@@ -135,11 +137,9 @@ struct AST{
                 AST *ast = new AST(Type::Print);
                 ast->construct();
                 body.pb(ast);
-            }else{
-                throw("naah");
-            }
+            }else throw("bacon");
         }
-    }
+    } 
 
     ll operator()(){
         if(type == Type::Start) return 1;
@@ -218,7 +218,6 @@ struct AST{
 };
 
 int main() {
-
     string filename = "fib.txt";
     freopen(filename.c_str(), "r", stdin);
 
@@ -226,8 +225,8 @@ int main() {
     try{
         ast.construct();
         ast.run();
-    }catch(exception e){
-        cout << "Could not compile because: ";
+    }catch(...){
+        cout << "Could not compile because";
         exit(0);
     }
     fclose(stdin);
